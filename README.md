@@ -9,6 +9,9 @@ through a lot of tedious environment variables at the top level.
 
 There are a series of blocks that can be connected and used together to
 simulate a variety of communcations systems, assuming 1D or 2D signal space.
+If necessary, they can also be extended by the user, since each block
+is actually an abstract class that can therefore be readily extended as
+necessary.
 
 This is meant to be a Python library that I can deploy to Anaconda for
 general use. 
