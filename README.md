@@ -1,9 +1,17 @@
 # Communcations Library
 
+This library is meant to abstract away many of the tedious parts of simulating
+communications systems, leaving nothing left but an elegant interface to
+calculate high-level abstractions such as bit or symbol error rates, energy per
+bit and plot as necessary. The goal is to be able to plot and calculate anything
+necessary when dealing with communication systems without having to sift
+through a lot of tedious environment variables at the top level.
+
+There are a series of blocks that can be connected and used together to
+simulate a variety of communcations systems, assuming 1D or 2D signal space.
+
 This is meant to be a Python library that I can deploy to Anaconda for
-general use. There are a series of blocks that can be connected and
-used together to simulate a variety of communcations systems, assuming
-1D or 2D signal space.
+general use. 
 
 ## Included blocks
 Here is a list of the classes and their methods. Note that these are all
@@ -19,7 +27,7 @@ This class defines a signal constellation in 2D space.
 | `d_E` | Return the minimum Euclidean distance between signal vectors |
 | `rate` | Return the signal rate in bits per dimension |
 | `generate` | Generate a random stream of complex values from the constellation |
-| `initiate` | Initiates a signal chain by calling `generate` and passing the resulting data to one or more `Pulse` instances |
+| `initiate` | Initiates a signal chain by calling `generate` and passing the resulting data to one or more `Pulse` and `Classifier` classes. |
 
 ### `Pulse` class
 This class turns a stream of complex data into time-domain orthonormal waveforms.
@@ -43,6 +51,7 @@ This class defines how incoming signals are distorted, with AWGN and/or propagat
 | Function | Purpose |
 | :--- | :--- |
 | `plot` | Plot time and frequency domain signals after distortion |
+| `plot_ideal` | plot frequency domain of channel loss |
 | `distort` | Distort incoming data and pass to one or more `Receiver` instances |
 
 ### `Receiver` class
@@ -83,16 +92,16 @@ This class classifies an incoming signal based on a `Constellation`.
 The goal use of this library is illustrated as follows:
 
 ```python
-# Build receiver from the back to front
+# Build receiver from the back to front, since we need object references
 # parameters are examples, not real yet
-classifier = Classifier('PSK', param=8)
+classifier = Classifier('PSK', param=[8, 1e-6])
 converter = ADC(T, [classifier])
 filter = Filter('SRRC', T, [converter])
 receiver = Receiver(100e6, [filter])
 channel = Channel(N0, [receiver], awgn=True)
 mixer = Mixer(100e6, [channel])
-srrc_pulse = SRRC(T)
-generator = PSK(8)  # Constellation
+srrc_pulse = SRRC(T, [mixer])
+generator = PSK(8, [srrc_pulse], [classifier]])
 
 # generate data in the chain
 generator.initiate(1024)
