@@ -1,15 +1,14 @@
-import matplotlib.pyplot as plt
+'''
+Contains the BPSK Constellation class, does binary phase-shift keying
+'''
+from constellation import Constellation
 import numpy as np
-from Constellation import Constellation
-
 
 class BPSK(Constellation):
     '''
-    Defines object for BPSK modulation
+    BPSK class
     '''
 
-    def get_series(self, L=100):
-        return np.sign(np.random.randn(L))
-    
-    def plot_constellation(self):
-        super().plot_constellation(np.array([-1, 1]), 'BPSK')
+    def __init__(self, energy, pulses, classifiers):
+        constellation = np.array([-energy, 0, energy, 0]).reshape((2, 2))
+        super.__init__(pulses, classifiers, constellation)
