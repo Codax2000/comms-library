@@ -20,6 +20,8 @@ class Constellation(ABC):
         self._pulses = pulses
         self._classifiers = classifiers
         self._constellation = constellation
+        for classifier in self._classifiers:
+            classifier._constellation = self
 
     def get_rate(self):
         '''
@@ -96,11 +98,10 @@ class Constellation(ABC):
         '''
         M, d = self._constellation.shape
         indices = np.random.randint(0, M, length)
-        self._data = self._constellation[indices, :]
+        self._data = indices
+        generated_data = self._constellation[indices, :]
         for pulse in self._pulses:
-            pulse.modulate(self._data)
-        for classifier in self._classifiers:
-            classifier._constellation = self
+            pulse.modulate(generated_data)
         return self._data
 
     def _get_plot_limits(self):

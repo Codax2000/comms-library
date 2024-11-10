@@ -27,3 +27,6 @@ def plot_psd(psd, freq, ax=None):
         fig = ax.figure()
     ax.plot(freq, psd)
     return fig
+
+class DataNotGeneratedError(Exception):
+    pass
