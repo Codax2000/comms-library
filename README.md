@@ -18,7 +18,7 @@ general use.
 
 ## Included blocks
 Here is a list of the classes and their methods. Note that these are all
-abstract methods and have specific instances 
+abstract methods and behave according to the specific instantiated class
 
 ### `Constellation` class
 This class defines a signal constellation in 2D space.

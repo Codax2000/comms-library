@@ -100,7 +100,7 @@ class Constellation(ABC):
         for pulse in self._pulses:
             pulse.modulate(self._data)
         for classifier in self._classifiers:
-            classifier._expected_data = self._data.copy()
+            classifier._constellation = self
         return self._data
 
     def _get_plot_limits(self):
