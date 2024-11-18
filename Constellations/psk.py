@@ -1,7 +1,7 @@
 '''
 Phase shift keying constellation
 '''
-from constellation import Constellation
+from .constellation import Constellation
 import numpy as np
 
 class PSK(Constellation):

@@ -1,4 +1,4 @@
-from classifier import Classifier
+from .classifier import Classifier
 import numpy as np
 import matplotlib.pyplot as plt
 

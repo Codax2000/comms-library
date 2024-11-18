@@ -1,1 +1,0 @@
-from .iq_classifier import IQClassifier
