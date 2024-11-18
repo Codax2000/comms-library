@@ -10,6 +10,6 @@ class PSK(Constellation):
         theta = np.linspace(0, 2 * np.pi, num = number + 1)
         theta = theta[:-1]
         I = amplitude * np.cos(theta)
-        Q = amplitude * np.sim(theta)
+        Q = amplitude * np.sin(theta)
         constellation = np.vstack((I, Q)).T
-        super.__init__(pulses, classifiers, constellation)
+        super().__init__(pulses, classifiers, constellation)

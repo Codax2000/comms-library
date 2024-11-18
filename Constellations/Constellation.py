@@ -73,7 +73,7 @@ class Constellation(ABC):
         handle.
         '''
         if ax is None:
-            fig, ax = plt.figure()
+            fig, ax = plt.subplots()
             x_min, x_max, y_min, y_max = self._get_plot_limits()
             ax.set_xlim(x_min, x_max)
             ax.set_ylim(y_min, y_max)

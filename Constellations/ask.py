@@ -1,7 +1,7 @@
 '''
 Contains the PSK Constellation class, does amplitude keying with M signals
 '''
-from constellation import Constellation
+from .constellation import Constellation
 import numpy as np
 
 class ASK(Constellation):
@@ -16,4 +16,4 @@ class ASK(Constellation):
         a = a - np.mean(a)
         q = np.zeros((number, 1))
         constellation = np.hstack((a.reshape((number, 1)), q))
-        super.__init__(pulses, classifiers, constellation)
+        super().__init__(pulses, classifiers, constellation)
