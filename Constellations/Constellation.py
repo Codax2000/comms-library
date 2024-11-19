@@ -80,11 +80,13 @@ class Constellation(ABC):
             ax.scatter(self._constellation[:, 0],
                        self._constellation[:, 1],
                        label='Constellation')
+            ax.set_xlabel('In-phase [I]')
+            ax.set_ylabel('Quadrature [Q]')
         else:
             fig = ax.figure
-        ax.scatter(self._constellation[:, 0],
-                   self._constellation[:, 1],
-                   label='Constellation')
+            ax.scatter(self._constellation[:, 0],
+                    self._constellation[:, 1],
+                    label='Constellation')
         ax.grid()
         ax.legend()
         return fig    
@@ -99,9 +101,10 @@ class Constellation(ABC):
         indices = np.random.randint(0, M, length)
         self._data = indices
         generated_data = self._constellation[indices, :]
+        generated_data = generated_data[:, 0] + 1j * generated_data[:, 1]
         for pulse in self._pulses:
             pulse.modulate(generated_data)
-        return self._data
+        return generated_data
 
     def _get_plot_limits(self):
         '''
@@ -109,8 +112,8 @@ class Constellation(ABC):
         '''
         y_min = np.min(self._constellation[:, 1])
         y_max = np.max(self._constellation[:, 1])
-        x_min = np.min(self._constellation[:, 1])
-        x_max = np.max(self._constellation[:, 1])
+        x_min = np.min(self._constellation[:, 0])
+        x_max = np.max(self._constellation[:, 0])
 
         # adjust as necessary
         if y_min == y_max:
@@ -119,8 +122,9 @@ class Constellation(ABC):
         if x_min == x_max:
             x_min = -1
             x_max = +1
-        x_min -= 0.05 * np.abs(x_min)
-        x_max += 0.05 * np.abs(x_max)
-        y_min += 0.05 * np.abs(y_min)
-        y_max += 0.05 * np.abs(y_max)
+        offset = 0.3
+        x_min -= offset * np.abs(x_min)
+        x_max += offset * np.abs(x_max)
+        y_min -= offset * np.abs(y_min)
+        y_max += offset * np.abs(y_max)
         return x_min, x_max, y_min, y_max

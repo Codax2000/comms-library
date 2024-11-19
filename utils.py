@@ -6,12 +6,11 @@ def fft_psd(wave, fs):
     '''
     Returns the power spectral density of the given wave with the frequency.
     '''
-    nfft = wave.shape[0]
-    xdft = np.fft.fftshift(np.fft.fft(wave))  # 2-sided PSD
-    xdft_psd = np.power(np.abs(xdft), 2) / (nfft * fs)
-    xdft_dB = 10 * np.log10(xdft_psd)
-    freq = np.arange(-nfft/2, nfft/2) * fs / nfft
-    return xdft_dB, freq
+    N = wave.shape[0]
+    xdft = np.fft.fftshift(np.fft.fft(wave))
+    psd = np.real(xdft * np.conj(xdft)) / (fs * N)
+    f = np.arange(-N/2, N/2) * fs / N
+    return psd, f
 
 
 def plot_psd(psd, freq, ax=None):
@@ -20,12 +19,17 @@ def plot_psd(psd, freq, ax=None):
     a new figure and plots on that. Returns the handle of the Figure on which
     it is plotted
     '''
+    psd_db = 10 * np.log10(psd)
     if ax is None:
         fig, ax = plt.subplots()
         ax.grid()
+        ax.set_xlabel('Frequency [Hz]')
+        ax.set_ylabel('PSD [dB/Hz]')
+        max_y = np.max(psd_db)
+        ax.set_ylim(max_y - 50, np.max([0, max_y + 5]))
     else:
-        fig = ax.figure()
-    ax.plot(freq, psd)
+        fig = ax.figure
+    ax.plot(freq, psd_db)
     return fig
 
 class DataNotGeneratedError(Exception):

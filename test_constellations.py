@@ -2,6 +2,7 @@ from constellations.psk import PSK
 from constellations.ask import ASK
 from constellations.qam import QAM
 import matplotlib.pyplot as plt
+import numpy as np
 import pdb
 
 
@@ -15,6 +16,11 @@ def main():
     psk8.plot(ax[0])
     ask4.plot(ax[1])
     qam16.plot(ax[2])
+
+    plt.figure()
+    data = psk8.generate_data(16)
+    plt.plot(np.real(data))
+    plt.plot(np.imag(data))
     plt.show()
 
 
